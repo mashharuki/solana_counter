@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import { createCounter, fetchCounter, updateCounter } from "../anchorClient";
 import {
+  useAnchorWallet,
   useConnection,
   useWallet,
-  useAnchorWallet,
 } from "@solana/wallet-adapter-react";
+import React, { useState } from "react";
+import { createCounter, fetchCounter, updateCounter } from "../anchorClient";
 
+/**
+ * Home Component
+ * @returns 
+ */
 const Home: React.FC = () => {
   const { connected } = useWallet();
   const wallet = useAnchorWallet();
@@ -16,6 +20,10 @@ const Home: React.FC = () => {
   const [resultUrl, setResultUrl] = useState<string>("");
   const [counterData, setCounterData] = useState<number | null>(null);
 
+  /**
+   * Counter Contractをデプロイするメソッド
+   * @returns 
+   */
   const handleCreateCounter = async () => {
     if (!connected) {
       setStatus("ウォレットが接続されていません");
@@ -30,6 +38,7 @@ const Home: React.FC = () => {
     setStatus("プログラム実行中...");
 
     try {
+      // call createCounter function
       const result = await createCounter(wallet, connection);
       setStatus("プログラムが正常に実行されました");
       setResultUrl(`https://solscan.io/tx/${result}?cluster=devnet`);
@@ -38,6 +47,10 @@ const Home: React.FC = () => {
     }
   };
 
+  /**
+   * カウンターの数値を取得するメソッド
+   * @returns 
+   */
   const handleFetchCounter = async () => {
     if (!connected) {
       setStatus("ウォレットが接続されていません");
@@ -52,6 +65,7 @@ const Home: React.FC = () => {
     setStatus("カウンターを取得中...");
 
     try {
+      // call fetchCounter function
       const counter = await fetchCounter(wallet, connection);
       setStatus("カウンターの取得に成功しました");
       setCounterData(counter.count.toNumber());
@@ -60,6 +74,10 @@ const Home: React.FC = () => {
     }
   };
 
+  /**
+   * カウンターの値を更新するメソッド
+   * @returns 
+   */
   const handleUpdateCounter = async () => {
     if (!connected) {
       setStatus("ウォレットが接続されていません");
@@ -74,6 +92,7 @@ const Home: React.FC = () => {
     setStatus("カウンターを更新中...");
 
     try {
+      // call updateCounter function
       const result = await updateCounter(wallet, connection);
       setStatus("カウンターが正常に更新されました");
       setResultUrl(`https://solscan.io/tx/${result}?cluster=devnet`);
