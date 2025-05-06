@@ -7,7 +7,7 @@ import IDL from "./idl.json";
 
 // Define the program ID for the counter program
 const programId_counter = new PublicKey(
-  "H5U88wk7D8Qj7KeztdrJJcWqLwAgZLyMVozrigd2D1Ue"
+  "77wNcKDwzrk4q2TCmPCMQSMv9M2Z6STWxjdCTpz3XXEg"
 );
 
 /**
@@ -74,6 +74,8 @@ export async function fetchCounter(
     [wallet.publicKey.toBytes()],
     program.programId
   );
+
+  console.log("counter", counter.toString());
 
   // get fetch method
   const counterAccount = await program.account.counter.fetch(counter);
